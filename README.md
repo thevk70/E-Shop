@@ -286,8 +286,13 @@ Add screenshots of:
 Example:
 
 ```md
-<img src="https://raw.githubusercontent.com/thevk70/E-Shop/main/screenshots/Eshop_Admin_Collage.webp" alt="Admin Dashboard" width="100%" />
-<img src="https://raw.githubusercontent.com/thevk70/E-Shop/main/screenshots/Eshop_User_Collage.webp" alt="User Dashboard" width="100%" />
+## User Screens
+
+![User Dashboard](./screenshots/Eshop_User_Collage.png)
+
+## Admin Screens
+
+![Admin Dashboard](./screenshots/Eshop_Admin_Collage.png)
 ```
 
 ---
