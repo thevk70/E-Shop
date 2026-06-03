@@ -193,7 +193,6 @@ const Dashboard = () => {
       unpaidOrders: unpaidOrders.length,
       pendingOrders: pendingOrders.length,
       dispatchedOrders: dispatchedOrders.length,
-      pendingOrders: pendingOrders.length,
       cancelledOrders: cancelledOrders.length,
       totalProducts: allProducts.length,
       totalUsers,

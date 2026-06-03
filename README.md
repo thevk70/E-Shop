@@ -286,9 +286,13 @@ Add screenshots of:
 Example:
 
 ```md
-![Home](./screenshots/Eshop_Admin_Collage.webp)
+## User Screens
 
-![Dashboard](./screenshots/Eshop_User_Collage.webp)
+![User Dashboard](./screenshots/Eshop_User_Collage.png)
+
+## Admin Screens
+
+![Admin Dashboard](./screenshots/Eshop_Admin_Collage.png)
 ```
 
 ---
