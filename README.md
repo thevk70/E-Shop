@@ -288,11 +288,11 @@ Example:
 ```md
 ## User Screens
 
-![User Dashboard](./screenshots/Eshop_User_Collage.png)
+![User Dashboard](screenshots/Eshop_User_Collage.png)
 
 ## Admin Screens
 
-![Admin Dashboard](./screenshots/Eshop_Admin_Collage.png)
+![Admin Dashboard](screenshots/Eshop_Admin_Collage.png)
 ```
 
 ---
