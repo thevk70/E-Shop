@@ -7,7 +7,6 @@ import {
   LogIn,
   LogOut,
   Menu,
-  X,
   Settings2,
   ShoppingCart,
   ClipboardList,
@@ -20,24 +19,15 @@ import Error from "../components/shared/Error";
 import Loader from "./shared/Loader";
 import Footer from "./Footer";
 
-const menus = [
-  {
-    label: "Home",
-    link: "/",
-    icon: <Home className="h-4 w-4" />,
-  },
-  {
-    label: "Orders",
-    link: "/users/orders",
-    icon: <ClipboardList className="h-4 w-4" />,
-  },
-];
-
 const Layout = () => {
   const { logout, user } = useAuth();
-  const { data, error, isLoading } = useSWR(user ? "/cart" : null, fetcher, {
-    revalidateOnFocus: false,
-  });
+  const { data, error, isLoading } = useSWR(
+    user?.token ? "/cart" : null,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    },
+  );
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
@@ -83,43 +73,58 @@ const Layout = () => {
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">
-            {menus.map((item) => (
-              <NavLink
-                key={item.link}
-                to={item.link}
-                className={({ isActive }) =>
-                  `flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium transition-all duration-200 ${
-                    isActive
-                      ? "bg-zinc-900 text-white shadow-sm"
-                      : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                  }`
-                }
-              >
-                {item.icon}
-                {item.label}
-              </NavLink>
-            ))}
-
             <NavLink
-              to="/users/carts"
+              to="/"
               className={({ isActive }) =>
-                `ml-1 flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                `flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium transition-all duration-200 ${
                   isActive
                     ? "bg-zinc-900 text-white shadow-sm"
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
                 }`
               }
             >
-              <Badge
-                count={data?.length || 0}
-                size="small"
-                offset={[0, 2]}
-                className="!text-inherit"
-              >
-                <ShoppingCart className="h-4 w-4" />
-              </Badge>
-              Cart
+              <Home className="h-4 w-4" />
+              Home
             </NavLink>
+
+            {user && (
+              <>
+                <NavLink
+                  to="/users/orders"
+                  className={({ isActive }) =>
+                    `flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                      isActive
+                        ? "bg-zinc-900 text-white shadow-sm"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    }`
+                  }
+                >
+                  <ClipboardList className="h-4 w-4" />
+                  Orders
+                </NavLink>
+
+                <NavLink
+                  to="/users/carts"
+                  className={({ isActive }) =>
+                    `ml-1 flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-medium transition-all duration-200 ${
+                      isActive
+                        ? "bg-zinc-900 text-white shadow-sm"
+                        : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                    }`
+                  }
+                >
+                  <Badge
+                    count={data?.length || 0}
+                    size="small"
+                    offset={[0, 2]}
+                    className="!text-inherit"
+                  >
+                    <ShoppingCart className="h-4 w-4" />
+                  </Badge>
+                  Cart
+                </NavLink>
+              </>
+            )}
           </nav>
 
           <div className="flex items-center gap-3">
@@ -176,25 +181,8 @@ const Layout = () => {
           width={290}
         >
           <div className="flex flex-col gap-2">
-            {menus.map((item) => (
-              <NavLink
-                key={item.link}
-                to={item.link}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition ${
-                    isActive
-                      ? "bg-zinc-900 text-white"
-                      : "text-gray-700 hover:bg-gray-100"
-                  }`
-                }
-              >
-                {item.icon}
-                {item.label}
-              </NavLink>
-            ))}
-
             <NavLink
-              to="/users/carts"
+              to="/"
               className={({ isActive }) =>
                 `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition ${
                   isActive
@@ -203,11 +191,43 @@ const Layout = () => {
                 }`
               }
             >
-              <Badge count={data?.length || 0} size="small">
-                <ShoppingCart className="h-4 w-4" />
-              </Badge>
-              Cart
+              <Home className="h-4 w-4" />
+              Home
             </NavLink>
+
+            {user && (
+              <>
+                <NavLink
+                  to="/users/orders"
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition ${
+                      isActive
+                        ? "bg-zinc-900 text-white"
+                        : "text-gray-700 hover:bg-gray-100"
+                    }`
+                  }
+                >
+                  <ClipboardList className="h-4 w-4" />
+                  Orders
+                </NavLink>
+
+                <NavLink
+                  to="/users/carts"
+                  className={({ isActive }) =>
+                    `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition ${
+                      isActive
+                        ? "bg-zinc-900 text-white"
+                        : "text-gray-700 hover:bg-gray-100"
+                    }`
+                  }
+                >
+                  <Badge count={data?.length || 0} size="small">
+                    <ShoppingCart className="h-4 w-4" />
+                  </Badge>
+                  Cart
+                </NavLink>
+              </>
+            )}
 
             {!user && (
               <Link
@@ -223,7 +243,7 @@ const Layout = () => {
       </header>
 
       <main className="min-h-[calc(100vh-80px)]">
-        {isLoading ? <Loader /> : <Outlet />}
+        {isLoading && user ? <Loader /> : <Outlet />}
       </main>
 
       <Footer />
