@@ -286,9 +286,9 @@ Add screenshots of:
 Example:
 
 ```md
-![Home](./screenshots/Eshop_Admin_Collage.webp)
+<img src="./screenshots/Eshop_Admin_Collage.webp" alt="Admin Dashboard" width="100%" />
 
-![Dashboard](./screenshots/Eshop_User_Collage.webp)
+<img src="./screenshots/Eshop_User_Collage.webp" alt="User Dashboard" width="100%" />
 ```
 
 ---
