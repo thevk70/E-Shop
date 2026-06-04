@@ -285,7 +285,7 @@ Add screenshots of:
 
 Example:
 
-```md
+
 ## User Screens
 
 ![User Dashboard](screenshots/Eshop_User_Collage.png)
@@ -293,7 +293,6 @@ Example:
 ## Admin Screens
 
 ![Admin Dashboard](screenshots/Eshop_Admin_Collage.png)
-```
 
 ---
 
