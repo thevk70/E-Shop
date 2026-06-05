@@ -5,6 +5,7 @@ import Product from "../products/products.schema.js";
 import Order from "../orders/order.schema.js";
 import Cart from "../carts/cart.schema.js";
 import Notification from "../notifications/notification.schema.js";
+import User from "../users/users.schema.js";
 
 const stripe = new Stripe(process.env.S_KEY);
 
@@ -18,6 +19,22 @@ function calculateAmount(items) {
 
 export const createCheckout = async (req, res) => {
   try {
+    const user = await User.findById(req.user?.id);
+
+    if (
+      !user.mobile ||
+      !user.address ||
+      !user.city ||
+      !user.state ||
+      !user.country ||
+      !user.pincode
+    ) {
+      return res.status(400).json({
+        message: "Please complete your profile before placing an order.",
+        redirectTo: "/users/settings",
+      });
+    }
+
     if (!req.user?.id) {
       return res.status(401).json({ message: "Unauthorized" });
     }

@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import { httpRequest } from "../../lib/http-request";
 import placeholderimg from "../../assets/product-placeholder.jpg";
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const calculateTotalAmount = (items) => {
   let totalAmount = 0;
@@ -35,6 +36,8 @@ const calculateTotalAmount = (items) => {
 const UserCarts = () => {
   const { data, error, isLoading } = useSWR("/cart", fetcher);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const hasOutOfStockItem = useMemo(() => {
     return (
@@ -66,6 +69,11 @@ const UserCarts = () => {
     } catch (err) {
       setLoading(false);
       toast.error(err?.response?.data?.message || "Something went wrong");
+      if (err?.response?.data?.redirectTo) {
+        setTimeout(() => {
+          navigate(err.response.data.redirectTo);
+        }, 1000);
+      }
     }
   };
 
