@@ -12,6 +12,8 @@ const Signup = lazy(() => import("./components/Signup"));
 const ForgotPassword = lazy(() => import("./components/ForgetPassword"));
 const Home = lazy(() => import("./components/Home"));
 const NotFound = lazy(() => import("./components/NotFound"));
+const ProductDetails = lazy(() => import("./components/ProductDetails"));
+import AIShoppingAssistant from "./components/AIShoppingAssistant";
 
 // Layouts
 const MainLayout = lazy(() => import("./components/Layout"));
@@ -37,6 +39,7 @@ const App = () => {
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
           </Route>
           <Route element={<AuthGuard />}>
             <Route path="/login" element={<Login />} />
@@ -57,6 +60,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <AIShoppingAssistant />
         <ToastContainer />
       </Suspense>
     </BrowserRouter>

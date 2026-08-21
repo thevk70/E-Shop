@@ -13,7 +13,6 @@ import placeholderImg from "../assets/product-placeholder.jpg";
 
 const Home = () => {
   const { data, error, isLoading } = useSWR("/products", fetcher);
-  console.log(data);
 
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -25,14 +24,23 @@ const Home = () => {
         return;
       }
 
-      const response = await httpRequest.post("/cart", { product: id });
+      const response = await httpRequest.post("/cart", {
+        product: id,
+      });
+
       mutate("/cart");
+
       toast.success(response.data.message || "Added to cart", {
         position: "top-center",
       });
     } catch (err) {
       toast.error(err.response?.data?.message || "Something went wrong");
     }
+  };
+
+  // Navigate to product details
+  const openProduct = (id) => {
+    navigate(`/product/${id}`);
   };
 
   if (error) {
@@ -46,6 +54,8 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        {/* Hero */}
+
         <div className="mb-10 rounded-3xl bg-gradient-to-r from-zinc-900 via-zinc-800 to-zinc-900 px-6 py-10 text-white shadow-xl">
           <div className="grid gap-6 md:grid-cols-2 md:items-center">
             <div>
@@ -53,9 +63,11 @@ const Home = () => {
                 <Star className="h-4 w-4" />
                 Premium shopping experience
               </p>
+
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                 Discover products built for everyday life.
               </h1>
+
               <p className="mt-4 max-w-2xl text-sm leading-7 text-zinc-300 sm:text-base">
                 Browse quality products, compare prices, and enjoy a smooth
                 shopping experience with secure checkout and fast browsing.
@@ -65,36 +77,51 @@ const Home = () => {
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
                 <ShieldCheck className="h-5 w-5 text-green-400" />
+
                 <p className="mt-2 text-sm font-semibold">Secure Payment</p>
+
                 <p className="text-xs text-zinc-300">Safe checkout flow</p>
               </div>
+
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
                 <Truck className="h-5 w-5 text-sky-400" />
+
                 <p className="mt-2 text-sm font-semibold">Fast Delivery</p>
+
                 <p className="text-xs text-zinc-300">Quick dispatch options</p>
               </div>
+
               <div className="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
                 <ShoppingCart className="h-5 w-5 text-amber-400" />
+
                 <p className="mt-2 text-sm font-semibold">Easy Shopping</p>
+
                 <p className="text-xs text-zinc-300">Simple cart experience</p>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Products Header */}
+
         <div className="mb-6 flex items-center justify-between">
           <h2 className="text-2xl font-bold text-gray-900 sm:text-3xl">
             Featured Products
           </h2>
+
           <p className="text-sm text-gray-500">
             {data?.length || 0} products available
           </p>
         </div>
 
+        {/* Products */}
+
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
           {data?.map((item, index) => {
             const discountedPrice = priceCalculator(item.price, item.discount);
+
             const stock = Number(item.stock || 0);
+
             const isOutOfStock = stock === 0;
 
             return (
@@ -103,7 +130,10 @@ const Home = () => {
                 hoverable
                 className="overflow-hidden rounded-3xl border border-gray-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 cover={
-                  <div className="bg-white">
+                  <div
+                    className="cursor-pointer bg-white"
+                    onClick={() => openProduct(item._id)}
+                  >
                     <Carousel arrows dots>
                       {(item.images?.length > 0
                         ? item.images
@@ -115,6 +145,9 @@ const Home = () => {
                               src={img}
                               alt={`product-${imgIndex}`}
                               className="max-h-full max-w-full object-contain"
+                              onError={(event) => {
+                                event.currentTarget.src = placeholderImg;
+                              }}
                             />
                           </div>
                         </div>
@@ -124,8 +157,13 @@ const Home = () => {
                 }
               >
                 <div className="flex h-full flex-col">
-                  <div className="min-w-0">
-                    <h3 className="line-clamp-2 break-words text-lg font-semibold leading-snug text-gray-900">
+                  {/* Product Information */}
+
+                  <div
+                    className="min-w-0 cursor-pointer"
+                    onClick={() => openProduct(item._id)}
+                  >
+                    <h3 className="line-clamp-2 break-words text-lg font-semibold leading-snug text-gray-900 transition hover:text-violet-600">
                       {item.title}
                     </h3>
 
@@ -133,6 +171,8 @@ const Home = () => {
                       {item.description}
                     </p>
                   </div>
+
+                  {/* Tags */}
 
                   <div className="mt-3 flex flex-wrap items-center gap-2">
                     <Tag className="!m-0 !rounded-full !border-0 !bg-zinc-900 !px-3 !py-1 !text-xs !text-white">
@@ -150,19 +190,25 @@ const Home = () => {
                     ) : null}
                   </div>
 
+                  {/* Price */}
+
                   <div className="mt-4 rounded-2xl bg-gray-50 p-4">
                     <div className="flex items-center gap-2">
                       <span className="text-lg font-bold text-gray-900">
                         ₹{discountedPrice.toLocaleString()}
                       </span>
+
                       <span className="text-sm text-gray-400 line-through">
                         ₹{item.price.toLocaleString()}
                       </span>
                     </div>
+
                     <p className="mt-1 text-xs text-gray-500">
                       {item.discount}% discount applied
                     </p>
                   </div>
+
+                  {/* Add To Cart */}
 
                   <Button
                     onClick={() => addToCart(item._id)}
