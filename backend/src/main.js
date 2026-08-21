@@ -9,6 +9,7 @@ import orderRouter from "./orders/order.router.js";
 import checkoutRouter from "./checkout/checkout.router.js";
 import { webhook } from "./checkout/checkout.controller.js";
 import notificationRouter from "./notifications/notification.router.js";
+import aiRouter from "./ai/ai.router.js";
 
 dotenv.config();
 const env = process.env;
@@ -45,6 +46,7 @@ app.use("/orders", orderRouter);
 app.use("/checkout", checkoutRouter);
 app.use("/admin", notificationRouter);
 app.use("/notifications", notificationRouter);
+app.use("/ai", aiRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: `${req.url} not found` });
